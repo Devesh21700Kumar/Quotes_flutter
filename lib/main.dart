@@ -34,7 +34,14 @@ class _QuoteListState extends State<QuoteList> {
         backgroundColor: Colors.redAccent,
       ),
       body: Column(
-        children: quotes.map((quote) => quoteTemplate(quote)).toList(),
+        children: quotes.map((quote) => QuoteCard(
+            quote: quote,
+            delete: (){
+              setState(() {
+                quotes.remove(quote);
+              });
+            }
+        )).toList(),
       ),
     );
   }
@@ -42,7 +49,8 @@ class _QuoteListState extends State<QuoteList> {
 
 class QuoteCard extends StatelessWidget {
 final Quote quote;
-QuoteCard({this.quote});
+final Function delete;
+QuoteCard({this.quote, this.delete});
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +76,12 @@ QuoteCard({this.quote});
                   color: Colors.grey[800],
                 ),
               ),
+              SizedBox(height: 6.0),
+              FlatButton.icon(
+                onPressed: delete,
+                label: Text('delete quote'),
+                icon:  Icon(Icons.delete),
+              )
             ],
           ),
         )
